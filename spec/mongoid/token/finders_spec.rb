@@ -10,14 +10,14 @@ describe Mongoid::Token::Finders do
     klass = Class.new
     field = :another_token
     Mongoid::Token::Finders.define_custom_token_finder_for(klass, field)
-    klass.singleton_methods.should include(:"find_by_#{field}")
+    expect(klass.singleton_methods).to include(:"find_by_#{field}")
   end
 
   it "retrieve a document using the dynamic finder" do
     class Document; include Mongoid::Document; field :token; end
     document = Document.create!(:token => "1234")
     Mongoid::Token::Finders.define_custom_token_finder_for(Document)
-    Document.find_by_token("1234").should == document
+    expect(Document.find_by_token("1234")).to eq(document)
   end
 
   it 'retrieves multiple documents using the dynamic finder' do
@@ -25,6 +25,6 @@ describe Mongoid::Token::Finders do
     document = Document.create!(:token => "1234")
     document2 = Document.create!(:token => "5678")
     Mongoid::Token::Finders.define_custom_token_finder_for(Document)
-    Document.find_by_token(["1234", "5678"]).should == [document, document2]
+    expect(Document.find_by_token(["1234", "5678"])).to eq([document, document2])
   end
 end

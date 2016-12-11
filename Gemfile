@@ -1,10 +1,11 @@
-source "http://rubygems.org"
+source 'https://rubygems.org'
 
 gemspec
 
 group :test do
-  gem 'rspec', '2.14.1'
-  gem "codeclimate-test-reporter", require: nil
-  gem 'database_cleaner'
-  gem 'mongoid-rspec', '1.5.1'
+  gem 'mongoid', github: 'mongodb/mongoid'
+  gem 'rspec', '~> 3.5'
+  gem 'codeclimate-test-reporter', require: nil
+  gem 'mongoid_cleaner', '~> 1.2'
+  gem 'mongoid-rspec', github: 'williamatodd/mongoid-rspec'
 end

@@ -13,7 +13,7 @@ module Mongoid
         @klass = klass
         @field_name = field_name
         @retry_count = retry_count
-        klass.send(:include, Mongoid::Token::Collisions)
+        klass.send(:prepend, Mongoid::Token::Collisions)
         alias_method_with_collision_resolution(:insert)
         alias_method_with_collision_resolution(:upsert)
       end
@@ -25,12 +25,11 @@ module Mongoid
       private
       def alias_method_with_collision_resolution(method)
         handler = self
-        klass.send(:define_method, :"#{method.to_s}_with_#{handler.field_name}_safety") do |method_options = {}|
+        klass.send(:define_method, :"#{method.to_s}") do |method_options = {}|
           self.resolve_token_collisions handler do
-            with(:safe => true).send(:"#{method.to_s}_without_#{handler.field_name}_safety", method_options)
+            super(method_options)
           end
         end
-        klass.alias_method_chain method.to_sym, :"#{handler.field_name}_safety"
       end
     end
   end
