@@ -51,6 +51,11 @@ And that's it! There's lots of configuration options too - which are all
 listed [below](#configuration). By default, the `token` method will
 create tokens 4 characters long, containing random alphanumeric characters.
 
+__Migration:__ If you add Mongoid::Token to an already existing collection, 
+you might want to create tokens on existing documents. Mongoid::Token only
+creates token on document `before:create` or `before:save` callback. 
+Create missing tokens by calling `save` on existing mongoid documents. 
+
 __Note:__ Mongoid::Token leverages Mongoid's 'safe mode' by
 automatically creating a unique index on your documents using the token
 field. In order to take advantage of this feature (and ensure that your
